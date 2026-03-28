@@ -94,7 +94,6 @@ class PostResource extends Resource
                                 $now = now();
                                 return $now->format('Y') . '/' . $now->format('m');
                             })
-                            ->visibility('public')
                             ->image()
                             ->imageEditor()
                             ->maxSize(5120)
