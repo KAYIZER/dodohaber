@@ -24,11 +24,32 @@ class AppServiceProvider extends ServiceProvider
         \Livewire\Livewire::setUpdateRoute(function ($handle) {
             $isCentralDomain = in_array(request()->getHost(), config('tenancy.central_domains', []));
 
-            $middlewares = ['web'];
-
             if (! $isCentralDomain) {
-                $middlewares[] = \Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class;
-                $middlewares[] = \Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains::class;
+                $middlewares = [
+                    \Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class,
+                    \Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains::class,
+                    \Illuminate\Cookie\Middleware\EncryptCookies::class,
+                    \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+                    \Illuminate\Session\Middleware\StartSession::class,
+                    \Illuminate\Session\Middleware\AuthenticateSession::class,
+                    \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+                    \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
+                    \Illuminate\Routing\Middleware\SubstituteBindings::class,
+                    \Filament\Http\Middleware\DisableBladeIconComponents::class,
+                    \Filament\Http\Middleware\DispatchServingFilamentEvent::class,
+                ];
+            } else {
+                $middlewares = [
+                    \Illuminate\Cookie\Middleware\EncryptCookies::class,
+                    \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+                    \Illuminate\Session\Middleware\StartSession::class,
+                    \Illuminate\Session\Middleware\AuthenticateSession::class,
+                    \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+                    \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
+                    \Illuminate\Routing\Middleware\SubstituteBindings::class,
+                    \Filament\Http\Middleware\DisableBladeIconComponents::class,
+                    \Filament\Http\Middleware\DispatchServingFilamentEvent::class,
+                ];
             }
 
             return \Illuminate\Support\Facades\Route::post('/livewire/update', $handle)
