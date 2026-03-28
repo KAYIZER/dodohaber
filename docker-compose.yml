@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  dodohaber:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dodohaber_app
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      - APP_ENV=production
+    volumes:
+      # Verilerin sunucuda (hostta) kalıcı olması (persistence) için Volume bağlıyoruz.
+      - ./database:/var/www/html/database
+      - ./storage:/var/www/html/storage
+      - ./.env:/var/www/html/.env

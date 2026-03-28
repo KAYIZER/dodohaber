@@ -1,0 +1,53 @@
+@import "tailwindcss";
+@source "../../app/Filament";
+@source "../../app/Providers/Filament";
+@source "../../resources/views";
+@plugin "@tailwindcss/typography";
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--color-primary, #1a56db);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-secondary, #7c3aed);
+}
+
+/* Base application styling using theme settings injected in layout */
+body {
+    font-family: var(--font-family, 'Inter', sans-serif);
+}
+
+.text-primary {
+    color: var(--color-primary, #1a56db);
+}
+.bg-primary {
+    background-color: var(--color-primary, #1a56db);
+}
+.border-primary {
+    border-color: var(--color-primary, #1a56db);
+}
+
+.text-secondary {
+    color: var(--color-secondary, #7c3aed);
+}
+.bg-secondary {
+    background-color: var(--color-secondary, #7c3aed);
+}
+
+/* Hover dark variants */
+.hover\:text-primary-dark:hover {
+    color: color-mix(in srgb, var(--color-primary, #1a56db) 80%, black);
+}
+.hover\:bg-primary-dark:hover {
+    background-color: color-mix(in srgb, var(--color-primary, #1a56db) 80%, black);
+}
+.hover\:text-secondary-dark:hover {
+    color: color-mix(in srgb, var(--color-secondary, #7c3aed) 80%, black);
+}
