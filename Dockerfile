@@ -47,6 +47,8 @@ RUN git config --global --add safe.directory /var/www/html
 RUN composer install --optimize-autoloader --no-dev
 RUN npm install
 RUN npm run build
+RUN php artisan filament:assets || true
+RUN php artisan livewire:publish --assets || true
 
 # Docker Config ve Script'leri içeriye al
 COPY docker/supervisord.conf /etc/supervisord.conf
