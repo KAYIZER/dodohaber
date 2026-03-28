@@ -89,7 +89,7 @@ class PostResource extends Resource
                     Forms\Components\Section::make('Görsel')->schema([
                         Forms\Components\FileUpload::make('image_url')
                             ->label('Haber Görseli')
-                            ->disk('r2')
+                            ->disk('public')
                             ->directory(function () {
                                 $now = now();
                                 return $now->format('Y') . '/' . $now->format('m');
@@ -109,7 +109,7 @@ class PostResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('image_url')
                     ->label('Görsel')
-                    ->disk('r2')
+                    ->disk('public')
                     ->circular(),
                 Tables\Columns\TextColumn::make('title')
                     ->label('Başlık')
