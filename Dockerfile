@@ -16,11 +16,13 @@ RUN apk add --no-cache \
     freetype-dev \
     libxml2-dev \
     oniguruma-dev \
+    icu-dev \
+    libzip-dev \
     bash
 
 # PHP eklentilerini kur
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_sqlite mbstring exif pcntl bcmath gd xml
+    && docker-php-ext-install pdo_sqlite mbstring exif pcntl bcmath gd xml intl zip
 
 # Composer'ı global olarak kopyala
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -37,6 +39,9 @@ COPY docker/nginx.conf /etc/nginx/http.d/default.conf
 
 # Nginx'in www-data kullanıcısıyla çalışması için güncelliyoruz
 RUN sed -i 's/user nginx;/user www-data;/g' /etc/nginx/nginx.conf
+
+# Git sahiplik uyarısını çöz (Composer için)
+RUN git config --global --add safe.directory /var/www/html
 
 # Bağımlılıkları kur ve derlemeyi yap
 RUN composer install --optimize-autoloader --no-dev
