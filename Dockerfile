@@ -22,7 +22,7 @@ RUN apk add --no-cache \
 
 # PHP eklentilerini kur
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_sqlite mbstring exif pcntl bcmath gd xml intl zip
+    && docker-php-ext-install pdo_sqlite mbstring exif pcntl bcmath gd xml intl zip opcache
 
 # Composer'ı global olarak kopyala
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -36,6 +36,10 @@ COPY . .
 # Nginx ayar dosyasını kopyala (önce eski default config'i siliyoruz)
 RUN rm /etc/nginx/http.d/default.conf
 COPY docker/nginx.conf /etc/nginx/http.d/default.conf
+
+# PHP yapılandırma dosyalarını kopyala
+COPY docker/php.ini /usr/local/etc/php/conf.d/99-dodohaber.ini
+COPY docker/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 # Nginx'in www-data kullanıcısıyla çalışması için güncelliyoruz
 RUN sed -i 's/user nginx;/user www-data;/g' /etc/nginx/nginx.conf
